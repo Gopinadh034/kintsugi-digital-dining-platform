@@ -9,9 +9,9 @@ const SEED_KITCHEN_ORDERS = [
         id: 'ord-17865001',
         customerName: 'Satoshi Nakamoto (VIP)',
         items: [
-            { name: 'Wagyu A5 Nigiri', quantity: 2, price: 68 },
-            { name: 'Otoro Bluefin Toro Roll', quantity: 1, price: 45 },
-            { name: 'House Junmai Daiginjo Sake', quantity: 1, price: 32 }
+            { name: 'Wagyu A5 Nigiri', quantity: 2, price: 5799 },
+            { name: 'Otoro Bluefin Toro Roll', quantity: 1, price: 3799 },
+            { name: 'House Junmai Daiginjo Sake', quantity: 1, price: 2699 }
         ],
         totalAmount: 213.00,
         deliveryAddress: 'Table 4 — Zen Garden VIP Booth',
@@ -22,8 +22,8 @@ const SEED_KITCHEN_ORDERS = [
         id: 'ord-17865002',
         customerName: 'Elena Rostova',
         items: [
-            { name: 'Hokkaido Scallop Sashimi', quantity: 2, price: 38 },
-            { name: 'Matcha Opera Layer Cake', quantity: 2, price: 18 }
+            { name: 'Hokkaido Scallop Sashimi', quantity: 2, price: 3199 },
+            { name: 'Matcha Opera Layer Cake', quantity: 2, price: 1499 }
         ],
         totalAmount: 112.00,
         deliveryAddress: 'Suite 804 — Luxury Hotel Wing',
@@ -34,8 +34,8 @@ const SEED_KITCHEN_ORDERS = [
         id: 'ord-17865003',
         customerName: 'Marcus Vance',
         items: [
-            { name: 'Black Cod Miso Saikyo Yaki', quantity: 1, price: 52 },
-            { name: 'Truffle Edamame', quantity: 1, price: 16 }
+            { name: 'Black Cod Miso Saikyo Yaki', quantity: 1, price: 4399 },
+            { name: 'Truffle Edamame', quantity: 1, price: 1349 }
         ],
         totalAmount: 68.00,
         deliveryAddress: 'Counter Omakase — Seat 3',
@@ -303,7 +303,7 @@ async function renderKitchenDashboard() {
                     <span class="kds-item-qty">${i.quantity || 1}x</span>
                     ${i.name}
                 </span>
-                <span class="kds-item-price">$${((i.price || 0) * (i.quantity || 1)).toFixed(2)}</span>
+                <span class="kds-item-price">&#8377;${((i.price || 0) * (i.quantity || 1)).toLocaleString('en-IN')}</span>
             </li>
         `).join('');
 

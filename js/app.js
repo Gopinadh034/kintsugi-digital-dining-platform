@@ -13,7 +13,7 @@ const JAPANESE_CATALOG = [
         cuisine: 'Japanese / Edomae Sushi',
         dishType: 'sushi',
         stage3DIndex: 0,
-        price: 68,
+        price: 5799,
         rating: 4.95,
         reviewsCount: 142,
         caloriesPerServing: 420,
@@ -48,7 +48,7 @@ const JAPANESE_CATALOG = [
         cuisine: 'Japanese / Hakata Ramen',
         dishType: 'ramen',
         stage3DIndex: 1,
-        price: 32,
+        price: 2699,
         rating: 4.92,
         reviewsCount: 218,
         caloriesPerServing: 680,
@@ -83,7 +83,7 @@ const JAPANESE_CATALOG = [
         cuisine: 'Japanese / Robatayaki',
         dishType: 'wagyu',
         stage3DIndex: 2,
-        price: 85,
+        price: 7499,
         rating: 4.98,
         reviewsCount: 96,
         caloriesPerServing: 540,
@@ -117,7 +117,7 @@ const JAPANESE_CATALOG = [
         cuisine: 'Japanese / Wagashi Dessert',
         dishType: 'matcha',
         stage3DIndex: 3,
-        price: 24,
+        price: 1999,
         rating: 4.88,
         reviewsCount: 88,
         caloriesPerServing: 310,
@@ -151,7 +151,7 @@ const JAPANESE_CATALOG = [
         cuisine: 'Japanese / Izakaya Starters',
         dishType: 'gyoza',
         stage3DIndex: 4,
-        price: 28,
+        price: 2399,
         rating: 4.90,
         reviewsCount: 165,
         caloriesPerServing: 380,
@@ -185,7 +185,7 @@ const JAPANESE_CATALOG = [
         cuisine: 'Japanese / Artisanal Sake',
         dishType: 'sake',
         stage3DIndex: 5,
-        price: 45,
+        price: 3799,
         rating: 4.96,
         reviewsCount: 74,
         caloriesPerServing: 160,
@@ -248,6 +248,11 @@ const cartTotalPrice = document.getElementById('cartTotalPrice');
 const dishDetailModal = document.getElementById('dishDetailModal');
 const reservationModal = document.getElementById('reservationModal');
 
+// Format price in Indian Rupees with commas
+function formatINR(amount) {
+    return '₹' + Math.round(amount).toLocaleString('en-IN');
+}
+
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
     fetchAllDummyJsonRecipes();
@@ -272,7 +277,7 @@ function formatDummyRecipe(r) {
     };
 
     const kanji = kanjiMap[r.cuisine] || '厳選 おすすめ料理';
-    const price = Math.floor((r.caloriesPerServing ? r.caloriesPerServing / 20 : 25) + 15);
+    const price = Math.floor(((r.caloriesPerServing ? r.caloriesPerServing / 20 : 25) + 15) * 83);
 
     return {
         id: r.id, // Original DummyJSON ID (1 to 50)
@@ -743,8 +748,8 @@ function renderGrid(list) {
 
                 <div class="dish-card-footer">
                     <div class="dish-price-wrapper">
-                        <span class="currency-symbol">$</span>
-                        <span class="price-amount">${dish.price}</span>
+                        <span class="currency-symbol">₹</span>
+                        <span class="price-amount">${dish.price.toLocaleString('en-IN')}</span>
                     </div>
                     
                     <div class="dish-card-actions">
@@ -771,30 +776,36 @@ function renderGrid(list) {
             </div>
         `;
 
-        // Interactive 3D Perspective Tilt with Mouse Tracking
+        // RAF-throttled 3D Perspective Tilt (smooth on 4K / high-DPI screens)
+        let _rafPending = false;
+        let _mx = 0, _my = 0;
         card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const rotateX = ((y - centerY) / centerY) * -12;
-            const rotateY = ((x - centerX) / centerX) * 12;
-
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02) translateY(-6px)`;
-
-            const glare = card.querySelector('.card-glare-overlay');
-            if (glare) {
-                glare.style.opacity = '1';
-                glare.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 60%)`;
-            }
-        });
+            _mx = e.clientX;
+            _my = e.clientY;
+            if (_rafPending) return;
+            _rafPending = true;
+            requestAnimationFrame(() => {
+                _rafPending = false;
+                const rect = card.getBoundingClientRect();
+                const x = _mx - rect.left;
+                const y = _my - rect.top;
+                const rotateX = (((y - rect.height / 2) / rect.height) * 2) * -10;
+                const rotateY = (((x - rect.width  / 2) / rect.width)  * 2) * 10;
+                card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px) scale3d(1.02,1.02,1.02)`;
+                const glare = card.querySelector('.card-glare-overlay');
+                if (glare) {
+                    glare.style.opacity = '1';
+                    glare.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 55%)`;
+                }
+            });
+        }, { passive: true });
 
         card.addEventListener('mouseleave', () => {
-            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1) translateY(0)';
+            _rafPending = false;
+            card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) translateY(0) scale3d(1,1,1)';
             const glare = card.querySelector('.card-glare-overlay');
             if (glare) glare.style.opacity = '0';
-        });
+        }, { passive: true });
 
         recipesGrid.appendChild(card);
     });
@@ -816,7 +827,7 @@ function renderHeroFeaturedDish(index) {
     if (titleEl) titleEl.innerText = dish.name;
     if (kanjiEl) kanjiEl.innerText = dish.kanji;
     if (descEl) descEl.innerText = dish.description;
-    if (priceEl) priceEl.innerText = `$${dish.price}`;
+    if (priceEl) priceEl.innerText = formatINR(dish.price);
     if (ratingEl) ratingEl.innerHTML = `<i class="fas fa-star"></i> ${dish.rating} (${dish.reviewsCount} reviews)`;
     if (prepEl) prepEl.innerText = `${dish.prepTimeMinutes + dish.cookTimeMinutes} mins prep`;
 
@@ -979,8 +990,8 @@ function updateCartUI() {
         cartBadgeCount.style.display = totalCount > 0 ? 'flex' : 'none';
     }
 
-    if (cartSubtotalPrice) cartSubtotalPrice.innerText = `$${subtotal.toFixed(2)}`;
-    if (cartTotalPrice) cartTotalPrice.innerText = `$${total.toFixed(2)}`;
+    if (cartSubtotalPrice) cartSubtotalPrice.innerText = formatINR(subtotal);
+    if (cartTotalPrice) cartTotalPrice.innerText = formatINR(total);
 
     if (cartItemsList) {
         cartItemsList.innerHTML = '';
@@ -1003,14 +1014,14 @@ function updateCartUI() {
                 <div class="cart-item-info">
                     <div class="cart-item-kanji">${item.kanji || ''}</div>
                     <div class="cart-item-title">${item.name}</div>
-                    <div class="cart-item-price">$${item.price} each</div>
+                    <div class="cart-item-price">${formatINR(item.price)} each</div>
                 </div>
                 <div class="cart-item-qty-controls">
                     <button onclick="updateCartQuantity(${item.id}, -1)" title="Decrease Quantity"><i class="fas fa-minus"></i></button>
                     <span>${item.quantity}</span>
                     <button onclick="updateCartQuantity(${item.id}, 1)" title="Increase Quantity"><i class="fas fa-plus"></i></button>
                 </div>
-                <div class="cart-item-total">$${(item.price * item.quantity).toFixed(2)}</div>
+                <div class="cart-item-total">${formatINR(item.price * item.quantity)}</div>
                 <button class="btn-cart-remove" onclick="updateCartQuantity(${item.id}, -${item.quantity})" title="Remove item from order tray">
                     <i class="fas fa-trash-alt"></i>
                 </button>
@@ -1070,7 +1081,7 @@ async function open3DDishModal(id) {
     if (modalTitle) modalTitle.innerText = dish.name;
     if (modalKanji) modalKanji.innerText = dish.kanji;
     if (modalStory) modalStory.innerText = dish.story || dish.description;
-    if (modalPrice) modalPrice.innerText = `$${dish.price}`;
+    if (modalPrice) modalPrice.innerText = formatINR(dish.price);
     if (modalRating) modalRating.innerHTML = `<i class="fas fa-star"></i> ${dish.rating} (${dish.reviewsCount} reviews)`;
     if (modalPairing) modalPairing.innerText = dish.pairing || 'House Junmai Daiginjo';
     if (modalImage) {
@@ -1162,7 +1173,7 @@ async function handleCheckout() {
         showToast('Your order tray is empty!');
         return;
     }
-    const totalText = cartTotalPrice ? cartTotalPrice.innerText.replace('$', '') : '0';
+    const totalText = cartTotalPrice ? cartTotalPrice.innerText.replace('₹', '').replace(/,/g, '') : '0';
     const totalAmount = parseFloat(totalText) || 0;
     const currentUser = JSON.parse(localStorage.getItem('gourmet_current_user') || '{}');
 
@@ -1181,15 +1192,15 @@ async function handleCheckout() {
         toggleCartDrawer(false);
 
         if (response.ok && data.success) {
-            showToast(`Thank you! Order submitted successfully ($${totalAmount.toFixed(2)}). ID: ${data.order.id}`);
+            showToast(`Thank you! Order submitted successfully (${formatINR(totalAmount)}). ID: ${data.order.id}`);
         } else {
-            showToast(`Thank you! Order submitted successfully ($${totalAmount.toFixed(2)}).`);
+            showToast(`Thank you! Order submitted successfully (${formatINR(totalAmount)}).`);
         }
     } catch (err) {
         console.warn('Backend server offline, local order complete:', err);
         clearCart();
         toggleCartDrawer(false);
-        showToast(`Thank you! Order submitted successfully ($${totalAmount.toFixed(2)}). Code: KT-${Math.floor(10000 + Math.random() * 90000)}`);
+        showToast(`Thank you! Order submitted successfully (${formatINR(totalAmount)}). Code: KT-${Math.floor(10000 + Math.random() * 90000)}`);
     }
     if (window.zenAudio) window.zenAudio.playOrderSuccess();
 }

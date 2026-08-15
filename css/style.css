@@ -153,6 +153,69 @@ body {
     line-height: 1.6;
 }
 
+/* ==========================================================================
+   PERFORMANCE LAYER — 4K / High-DPI Smooth Rendering
+   GPU compositing, contain, will-change for animated elements
+   ========================================================================== */
+
+/* Promote the WebGL canvas to its own GPU layer */
+#webgl-canvas-container canvas {
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+/* Card grid — use CSS containment so layout changes don't repaint the whole page */
+#recipesGrid {
+    contain: layout style;
+}
+
+/* Dish cards — GPU layer promotion for 3D tilt animation */
+.japanese-dish-card,
+.kds-order-card,
+.kds-reservation-card,
+.kds-stat-card {
+    will-change: transform;
+    transform: translateZ(0);           /* force compositing layer */
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    isolation: isolate;                 /* own stacking context */
+}
+
+/* Glare overlay — kept on GPU so opacity change is free */
+.card-glare-overlay {
+    will-change: opacity, background;
+    pointer-events: none;
+}
+
+/* KDS modal backdrop blur — GPU-accelerated on WebKit & Blink */
+.kitchen-modal-backdrop {
+    will-change: opacity;
+    transform: translateZ(0);
+}
+
+/* High-resolution image rendering on 4K screens */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    img {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* Respect reduced-motion accessibility preference */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    .japanese-dish-card,
+    .kds-order-card {
+        will-change: auto;
+    }
+}
+
 
 #webgl-canvas-container {
     position: fixed;
