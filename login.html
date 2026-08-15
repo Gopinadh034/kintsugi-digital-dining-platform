@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIP Member Access & Private Portal - KINTSUGI (金継ぎ)</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2307070b'/><rect x='6' y='6' width='88' height='88' rx='14' fill='none' stroke='%23d4af37' stroke-width='4'/><text x='50' y='69' font-size='54' font-family='serif' font-weight='bold' text-anchor='middle' fill='%23f3c68f'>金</text></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Three.js for 3D Motion Background -->
+    <script src="js/three.min.js"></script>
+    <script>if (typeof THREE === 'undefined') { document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>'); }</script>
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="login-page-body">
+
+    <!-- 3D WebGL Motion Background Stage -->
+    <div id="webgl-canvas-container"></div>
+
+    <!-- Ambient Japanese Kanji Watermarks -->
+    <div class="kanji-watermark" style="font-size: 28vw; opacity: 0.018;">金継</div>
+
+    <!-- Background Particle Canvas for Golden Ember Sparks -->
+    <canvas id="loginParticlesCanvas" style="position: fixed; inset: 0; pointer-events: none; z-index: 1;"></canvas>
+
+    <!-- Main Dual-Pane Auth Layout -->
+    <div class="login-layout-wrapper">
+        
+        <!-- Left Side: VIP Club Presentation & Exclusive Privileges -->
+        <div class="login-showcase-pane glass">
+            <div class="showcase-top">
+                <a href="index.html" class="nav-brand" style="margin-bottom: 2rem;">
+                    <span class="kanji-stamp" style="width: 36px; height: 36px; font-size: 1rem;">金</span>
+                    <div class="brand-text-wrap">
+                        <span class="brand-name" style="font-size: 1.6rem;">KINTSUGI</span>
+                        <span class="brand-sub">PRIVATE GASTRONOMY CLUB</span>
+                    </div>
+                </a>
+
+                <div class="showcase-badge">
+                    <span class="kanji-stamp" style="width: 20px; height: 20px; font-size: 0.65rem;">極</span>
+                    <span>Exclusive Member Privileges (会員特典)</span>
+                </div>
+
+                <h1 class="showcase-title">
+                    Enter the Inner Sanctuary of <br>
+                    <span class="text-gradient-gold">Haute Japanese Kaiseki</span>
+                </h1>
+
+                <p class="showcase-desc">
+                    Private members receive priority counter reservations, allocations from rare Toyosu fish auctions, and cellar tastings of vintage Junmai Daiginjo.
+                </p>
+
+                <!-- 4 Key VIP Benefits -->
+                <div class="vip-perks-list">
+                    <div class="vip-perk-item">
+                        <div class="perk-icon-box"><i class="fas fa-crown"></i></div>
+                        <div>
+                            <h4>Chef's Hinoki Counter Priority</h4>
+                            <p>Direct counter seating before public booking release.</p>
+                        </div>
+                    </div>
+
+                    <div class="vip-perk-item">
+                        <div class="perk-icon-box"><i class="fas fa-wine-glass-alt"></i></div>
+                        <div>
+                            <h4>Private Sake Vault Allocation</h4>
+                            <p>Access to single-estate Jizake brews from Niigata & Hyogo.</p>
+                        </div>
+                    </div>
+
+                    <div class="vip-perk-item">
+                        <div class="perk-icon-box"><i class="fas fa-scroll"></i></div>
+                        <div>
+                            <h4>Seasonal Omakase Previews</h4>
+                            <p>Private tasting invitations for upcoming seasonal Kaiseki flights.</p>
+                        </div>
+                    </div>
+
+                    <div class="vip-perk-item">
+                        <div class="perk-icon-box"><i class="fas fa-utensils"></i></div>
+                        <div>
+                            <h4>Bespoke Flavor Calibration</h4>
+                            <p>Saved dietary matrix and tailored course adjustments.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quote Badge -->
+            <div class="showcase-quote-box">
+                <i class="fas fa-quote-left"></i>
+                <div>
+                    <p>"An otherworldly synthesis of culinary discipline, seasonality, and sensory architecture."</p>
+                    <span>— Michelin Gastronomy Review 2026</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Interactive Member Auth Card -->
+        <div class="login-card-pane glass">
+            
+            <div class="auth-card-header">
+                <div class="auth-kanji-seal">会員 認証</div>
+                <h2 class="auth-card-title">Member <span class="text-gradient-gold">Portal</span></h2>
+                <p class="auth-card-sub">Access your bespoke dining reservations and private orders.</p>
+            </div>
+
+            <!-- Fast 1-Click Demo Accounts Bar -->
+            <div class="quick-demo-accounts-bar">
+                <span class="demo-label"><i class="fas fa-bolt"></i> Instant Demo:</span>
+                <div class="demo-buttons-group">
+                    <button type="button" class="btn-demo-pill" onclick="quickFillDemo('chef', 'password')" title="Login as Master Chef">
+                        <i class="fas fa-user-ninja"></i> <strong>Master Chef</strong>
+                    </button>
+                    <button type="button" class="btn-demo-pill" onclick="quickFillDemo('vip_guest', 'omakase2026')" title="Login as VIP Member">
+                        <i class="fas fa-crown"></i> <strong>VIP Guest</strong>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mode Switcher Tabs -->
+            <div class="auth-tabs-pill">
+                <button type="button" class="tab-btn active" id="tabLogin" onclick="switchTab('login')">
+                    <i class="fas fa-sign-in-alt"></i> Sign In (ログイン)
+                </button>
+                <button type="button" class="tab-btn" id="tabSignup" onclick="switchTab('signup')">
+                    <i class="fas fa-user-plus"></i> Join Club (新規登録)
+                </button>
+            </div>
+
+            <!-- Sign In Form -->
+            <form id="loginForm" class="auth-interactive-form" onsubmit="handleLoginSubmit(event)">
+                <div class="auth-field-group">
+                    <label for="loginUsername"><i class="far fa-user"></i> Username or Email</label>
+                    <div class="auth-input-wrap">
+                        <i class="fas fa-envelope-open-text"></i>
+                        <input type="text" id="loginUsername" placeholder="e.g. chef or guest@kintsugi.com" required autocomplete="username">
+                    </div>
+                </div>
+                
+                <div class="auth-field-group">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <label for="loginPassword"><i class="fas fa-lock"></i> Master Passcode</label>
+                        <a href="#" class="forgot-pass-link" onclick="openForgotModal(event)">Forgot passcode?</a>
+                    </div>
+                    <div class="auth-input-wrap">
+                        <i class="fas fa-key"></i>
+                        <input type="password" id="loginPassword" placeholder="••••••••" required autocomplete="current-password">
+                        <button type="button" class="btn-eye-toggle" onclick="togglePasswordVisibility('loginPassword', this)">
+                            <i class="far fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-extra-row">
+                    <label class="remember-me-label">
+                        <input type="checkbox" id="rememberMe" checked>
+                        <span>Remember credentials on this terminal</span>
+                    </label>
+                </div>
+
+                <div id="loginError" class="auth-error-banner">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span class="error-msg">Invalid credentials. Please verify your passcode.</span>
+                </div>
+
+                <button type="submit" class="btn-auth-submit" id="loginSubmitBtn">
+                    <span>Enter Dining Portal</span> <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <!-- Sign Up / Join Club Form (Step 1: Details) -->
+            <form id="signupForm" class="auth-interactive-form" style="display: none;" onsubmit="handleSignupSubmit(event)">
+                <div class="auth-field-group">
+                    <label for="signupUsername"><i class="far fa-user"></i> Full Name / Member Handle</label>
+                    <div class="auth-input-wrap">
+                        <i class="fas fa-user-tag"></i>
+                        <input type="text" id="signupUsername" placeholder="e.g. Jane Smith" required autocomplete="name">
+                    </div>
+                </div>
+
+                <div class="auth-field-group">
+                    <label for="signupEmail"><i class="far fa-envelope"></i> Email Address</label>
+                    <div class="auth-input-wrap">
+                        <i class="fas fa-at"></i>
+                        <input type="email" id="signupEmail" placeholder="e.g. jane@gmail.com" required autocomplete="email">
+                    </div>
+                </div>
+                
+                <div class="auth-field-group">
+                    <label for="signupPassword"><i class="fas fa-lock"></i> Passcode</label>
+                    <div class="auth-input-wrap">
+                        <i class="fas fa-shield-alt"></i>
+                        <input type="password" id="signupPassword" placeholder="Min. 4 characters" required oninput="checkPasswordStrength(this.value)" autocomplete="new-password">
+                        <button type="button" class="btn-eye-toggle" onclick="togglePasswordVisibility('signupPassword', this)">
+                            <i class="far fa-eye"></i>
+                        </button>
+                    </div>
+                    <!-- Password Strength Meter -->
+                    <div class="strength-meter-wrap" id="strengthMeterWrap" style="display: none;">
+                        <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+                        <span class="strength-text" id="strengthText">Passcode strength</span>
+                    </div>
+                </div>
+
+                <div class="auth-field-group">
+                    <label for="signupConfirmPassword"><i class="fas fa-lock"></i> Confirm Passcode</label>
+                    <div class="auth-input-wrap">
+                        <i class="fas fa-check-double"></i>
+                        <input type="password" id="signupConfirmPassword" placeholder="Re-enter passcode" required autocomplete="new-password">
+                        <button type="button" class="btn-eye-toggle" onclick="togglePasswordVisibility('signupConfirmPassword', this)">
+                            <i class="far fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="signupError" class="auth-error-banner" style="display: none;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span class="error-msg">Error message details.</span>
+                </div>
+
+                <button type="submit" class="btn-auth-submit" id="signupSubmitBtn">
+                    <span>Register & Send Verification OTP</span> <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+
+            <!-- Sign Up OTP Verification Form (Step 2: OTP Verification) -->
+            <form id="signupOtpForm" class="auth-interactive-form" style="display: none;" onsubmit="handleVerifyRegistrationOTP(event)">
+                <div style="background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold-dim); padding: 0.85rem 1rem; border-radius: var(--radius-sm); font-size: 0.88rem; color: var(--gold-bright); line-height: 1.5;">
+                    <i class="fas fa-envelope-open-text"></i> Verification OTP dispatched to <strong id="regSentEmailLabel">your email</strong>.<br>
+                    <small style="color: var(--text-muted);">Code valid for 5 minutes.</small>
+                </div>
+
+                <div class="auth-field-group">
+                    <label for="registrationOtpCode"><i class="fas fa-key"></i> Enter 6-Digit Email OTP</label>
+                    <div class="auth-input-wrap">
+                        <i class="fas fa-shield-alt"></i>
+                        <input type="text" id="registrationOtpCode" placeholder="e.g. 123456" maxlength="6" style="letter-spacing: 5px; font-weight: bold; font-size: 1.15rem;" required>
+                    </div>
+                </div>
+
+                <div id="regOtpError" class="auth-error-banner" style="display: none;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span class="error-msg">Error message details.</span>
+                </div>
+
+                <button type="submit" class="btn-auth-submit" id="verifyRegOtpBtn">
+                    <span>Verify OTP & Activate Account</span> <i class="fas fa-check-circle"></i>
+                </button>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
+                    <button type="button" id="resendRegOtpBtn" onclick="handleResendRegistrationOTP()" style="background: none; border: none; color: var(--gold-bright); font-size: 0.85rem; cursor: pointer; text-decoration: underline;">
+                        <i class="fas fa-redo"></i> Resend OTP
+                    </button>
+                    <span id="regResendTimer" style="font-size: 0.8rem; color: var(--text-muted);"></span>
+                </div>
+            </form>
+
+            <!-- Social / VIP Pass Section -->
+            <div class="social-auth-divider">
+                <span>OR ACCESS WITH VIP PASS</span>
+            </div>
+
+            <div class="social-pass-buttons">
+                <button type="button" class="social-pass-btn" onclick="mockSocialAuth('Google Omakase Key')">
+                    <i class="fab fa-google"></i> <span>Google ID</span>
+                </button>
+                <button type="button" class="social-pass-btn" onclick="mockSocialAuth('Apple Key')">
+                    <i class="fab fa-apple"></i> <span>Apple Pass</span>
+                </button>
+                <button type="button" class="social-pass-btn" onclick="mockSocialAuth('Biometric Pass')">
+                    <i class="fas fa-fingerprint"></i> <span>Biometrics</span>
+                </button>
+            </div>
+
+            <div class="auth-card-footer">
+                <a href="index.html" class="return-home-link">
+                    <i class="fas fa-arrow-left"></i> Return to 3D Showcase & Grand Menu
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password / OTP Reset Modal -->
+    <div class="modal-overlay" id="forgotModal" onclick="if(event.target === this) closeForgotModal()">
+        <div class="reservation-modal-box" style="max-width: 480px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div class="auth-kanji-seal">暗証番号 再発行</div>
+                <button class="modal-close-btn" style="position: static;" onclick="closeForgotModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <h3 style="font-size: 1.6rem; margin: 0.75rem 0 0.25rem;">Passcode <span class="text-gradient-gold">Recovery OTP</span></h3>
+            <p style="color: var(--text-secondary); font-size: 0.88rem;">Enter your registered member email to receive your 6-digit verification code.</p>
+
+            <div class="auth-error-banner" id="forgotError" style="display: none; margin-top: 1rem;">
+                <i class="fas fa-exclamation-circle"></i>
+                <span class="error-msg">Error details.</span>
+            </div>
+
+            <!-- Step 1: Request OTP -->
+            <form id="forgotStep1Form" onsubmit="handleRequestOTP(event)" style="display: flex; flex-direction: column; gap: 1.25rem; margin-top: 1.25rem;">
+                <div class="auth-field-group">
+                    <label>Registered Email Address</label>
+                    <div class="auth-input-wrap">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="forgotEmail" placeholder="e.g. chef@kintsugi.com" required>
+                    </div>
+                </div>
+                <button type="submit" id="requestOTPBtn" class="btn-auth-submit" style="width: 100%; justify-content: center;">
+                    <i class="fas fa-paper-plane"></i> Send 6-Digit OTP to Email
+                </button>
+            </form>
+
+            <!-- Step 2: Verify OTP & Reset Password -->
+            <form id="forgotStep2Form" onsubmit="handleResetPasswordOTP(event)" style="display: none; flex-direction: column; gap: 1.1rem; margin-top: 1.25rem;">
+                <div style="background: rgba(212, 175, 55, 0.1); border: 1px solid var(--gold-dim); padding: 0.75rem 1rem; border-radius: var(--radius-sm); font-size: 0.85rem; color: var(--gold-bright);">
+                    <i class="fas fa-envelope-open-text"></i> OTP Code dispatched to <strong id="sentEmailLabel"></strong>.
+                </div>
+
+                <div class="auth-field-group">
+                    <label>Enter 6-Digit Email OTP Code</label>
+                    <div class="auth-input-wrap">
+                        <i class="fas fa-key"></i>
+                        <input type="text" id="otpCode" placeholder="e.g. 849201" maxlength="6" style="letter-spacing: 4px; font-weight: bold; font-size: 1.1rem;" required>
+                    </div>
+                </div>
+
+                <div class="auth-field-group">
+                    <label>New Member Passcode</label>
+                    <div class="auth-input-wrap">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="newPasscode" placeholder="At least 4 characters" required>
+                    </div>
+                </div>
+
+                <button type="submit" id="resetPassBtn" class="btn-auth-submit" style="width: 100%; justify-content: center;">
+                    <i class="fas fa-shield-alt"></i> Verify OTP & Update Passcode
+                </button>
+
+                <button type="button" onclick="resetForgotWizard()" style="background: none; border: none; color: var(--text-muted); font-size: 0.8rem; cursor: pointer; text-align: center;">
+                    <i class="fas fa-arrow-left"></i> Change Email Address
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Global Zen Toast Notification -->
+    <div class="zen-toast" id="zenToast">
+        <i class="fas fa-check-circle"></i>
+        <span id="zenToastMsg">Action completed successfully.</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/three-background.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/avatars.js"></script>
+    <script src="js/profile.js"></script>
+    <script>
+        // Floating Ember Particles
+        function initParticles() {
+            const canvas = document.getElementById('loginParticlesCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const particles = [];
+            const count = 35;
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    size: Math.random() * 2.5 + 0.8,
+                    speedY: -(Math.random() * 0.4 + 0.15),
+                    speedX: (Math.random() - 0.5) * 0.2,
+                    opacity: Math.random() * 0.6 + 0.2,
+                    color: Math.random() > 0.4 ? 'rgba(243, 198, 143, ' : 'rgba(255, 51, 75, '
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                particles.forEach(p => {
+                    p.y += p.speedY;
+                    p.x += p.speedX;
+                    if (p.y < 0) {
+                        p.y = height + 10;
+                        p.x = Math.random() * width;
+                    }
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color + p.opacity + ')';
+                    ctx.shadowBlur = 8;
+                    ctx.shadowColor = '#d4af37';
+                    ctx.fill();
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // Tab Switching
+        function switchTab(mode) {
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            const tabLogin = document.getElementById('tabLogin');
+            const tabSignup = document.getElementById('tabSignup');
+            const loginError = document.getElementById('loginError');
+            const signupError = document.getElementById('signupError');
+
+            if (loginError) loginError.style.display = 'none';
+            if (signupError) signupError.style.display = 'none';
+
+            if (mode === 'login') {
+                loginForm.style.display = 'flex';
+                signupForm.style.display = 'none';
+                tabLogin.classList.add('active');
+                tabSignup.classList.remove('active');
+            } else {
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'flex';
+                tabLogin.classList.remove('active');
+                tabSignup.classList.add('active');
+            }
+        }
+
+        // Quick Demo Fill
+        function quickFillDemo(username, password) {
+            switchTab('login');
+            const userInp = document.getElementById('loginUsername');
+            const passInp = document.getElementById('loginPassword');
+            if (userInp) userInp.value = username;
+            if (passInp) passInp.value = password;
+
+            // Make sure demo users exist in storage
+            const users = JSON.parse(localStorage.getItem('gourmet_users') || '[]');
+            if (!users.some(u => u.username === username)) {
+                users.push({ username, email: `${username}@kintsugi.com`, password });
+                localStorage.setItem('gourmet_users', JSON.stringify(users));
+            }
+
+            showToast(`Demo credentials applied for ${username.toUpperCase()}`);
+        }
+
+        // Toggle Password Visibility
+        function togglePasswordVisibility(inputId, btn) {
+            const inp = document.getElementById(inputId);
+            if (!inp) return;
+            const isPass = inp.type === 'password';
+            inp.type = isPass ? 'text' : 'password';
+            btn.innerHTML = isPass ? '<i class="far fa-eye-slash"></i>' : '<i class="far fa-eye"></i>';
+        }
+
+        // Password Strength Check
+        function checkPasswordStrength(val) {
+            const wrap = document.getElementById('strengthMeterWrap');
+            const fill = document.getElementById('strengthFill');
+            const text = document.getElementById('strengthText');
+            if (!wrap || !fill || !text) return;
+
+            if (!val) {
+                wrap.style.display = 'none';
+                return;
+            }
+
+            wrap.style.display = 'block';
+            let score = 0;
+            if (val.length >= 4) score += 25;
+            if (val.length >= 8) score += 25;
+            if (/[0-9]/.test(val)) score += 25;
+            if (/[^A-Za-z0-9]/.test(val)) score += 25;
+
+            fill.style.width = `${score}%`;
+            if (score <= 25) {
+                fill.style.background = '#ef4444';
+                text.innerText = 'Passcode strength: Weak';
+                text.style.color = '#ef4444';
+            } else if (score <= 50) {
+                fill.style.background = '#f59e0b';
+                text.innerText = 'Passcode strength: Fair';
+                text.style.color = '#f59e0b';
+            } else if (score <= 75) {
+                fill.style.background = '#10b981';
+                text.innerText = 'Passcode strength: Strong';
+                text.style.color = '#10b981';
+            } else {
+                fill.style.background = 'var(--gold-gradient)';
+                text.innerText = 'Passcode strength: Master VIP Grade';
+                text.style.color = 'var(--gold-bright)';
+            }
+        }
+
+        // Form Submissions
+        async function handleLoginSubmit(event) {
+            event.preventDefault();
+            const usernameOrEmail = document.getElementById('loginUsername').value.trim();
+            const pass = document.getElementById('loginPassword').value;
+            const errorDiv = document.getElementById('loginError');
+            const submitBtn = document.getElementById('loginSubmitBtn');
+            const origHtml = submitBtn.innerHTML;
+
+            if (!usernameOrEmail || !pass) {
+                errorDiv.querySelector('.error-msg').innerText = 'Please enter your username and passcode.';
+                errorDiv.style.display = 'flex';
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Authenticating credentials...</span>';
+
+            const res = await loginUser(usernameOrEmail, pass);
+            if (res.success) {
+                submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> <span>Authenticated! Redirecting...</span>';
+                showToast('Welcome back, Member! Authenticating...');
+                setTimeout(redirectToHome, 500);
+            } else {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = origHtml;
+                errorDiv.querySelector('.error-msg').innerText = res.message;
+                errorDiv.style.display = 'flex';
+            }
+        }
+
+        // -------------------------------------------------------------
+        // REGISTRATION & OTP HANDLERS
+        // -------------------------------------------------------------
+        let resendTimerInterval = null;
+
+        function startResendCooldownTimer(seconds = 60) {
+            const resendBtn = document.getElementById('resendRegOtpBtn');
+            const timerLabel = document.getElementById('regResendTimer');
+            if (!resendBtn || !timerLabel) return;
+
+            let timeLeft = seconds;
+            resendBtn.disabled = true;
+            resendBtn.style.opacity = '0.5';
+            resendBtn.style.cursor = 'not-allowed';
+
+            if (resendTimerInterval) clearInterval(resendTimerInterval);
+
+            timerLabel.innerText = `Resend in ${timeLeft}s`;
+
+            resendTimerInterval = setInterval(() => {
+                timeLeft--;
+                if (timeLeft <= 0) {
+                    clearInterval(resendTimerInterval);
+                    resendBtn.disabled = false;
+                    resendBtn.style.opacity = '1';
+                    resendBtn.style.cursor = 'pointer';
+                    timerLabel.innerText = '';
+                } else {
+                    timerLabel.innerText = `Resend in ${timeLeft}s`;
+                }
+            }, 1000);
+        }
+
+        async function handleSignupSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('signupUsername').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const pass = document.getElementById('signupPassword').value;
+            const confirmPass = document.getElementById('signupConfirmPassword').value;
+            const errorDiv = document.getElementById('signupError');
+            const submitBtn = document.getElementById('signupSubmitBtn');
+            const origHtml = submitBtn.innerHTML;
+
+            if (!name || !email || !pass || !confirmPass) {
+                errorDiv.querySelector('.error-msg').innerText = 'Please fill out all required fields.';
+                errorDiv.style.display = 'flex';
+                return;
+            }
+
+            if (pass !== confirmPass) {
+                errorDiv.querySelector('.error-msg').innerText = 'Password and Confirm Password do not match.';
+                errorDiv.style.display = 'flex';
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Sending Verification OTP...</span>';
+            errorDiv.style.display = 'none';
+
+            const res = await initiateRegistration(name, email, pass, confirmPass);
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = origHtml;
+
+            if (res.success) {
+                document.getElementById('regSentEmailLabel').innerText = email;
+                document.getElementById('signupForm').style.display = 'none';
+                document.getElementById('signupOtpForm').style.display = 'flex';
+                showToast(res.message || 'OTP sent to your email address!');
+                startResendCooldownTimer(60);
+            } else {
+                errorDiv.querySelector('.error-msg').innerText = res.message || 'Registration failed.';
+                errorDiv.style.display = 'flex';
+            }
+        }
+
+        async function handleVerifyRegistrationOTP(event) {
+            event.preventDefault();
+            const email = document.getElementById('signupEmail').value.trim();
+            const otp = document.getElementById('registrationOtpCode').value.trim();
+            const errorDiv = document.getElementById('regOtpError');
+            const submitBtn = document.getElementById('verifyRegOtpBtn');
+            const origHtml = submitBtn.innerHTML;
+
+            if (!email || !otp) {
+                errorDiv.querySelector('.error-msg').innerText = 'Please enter the 6-digit OTP sent to your email.';
+                errorDiv.style.display = 'flex';
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Verifying OTP Code...</span>';
+            errorDiv.style.display = 'none';
+
+            const res = await verifyRegistrationOTP(email, otp);
+            if (res.success) {
+                submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> <span>Account Verified! Redirecting...</span>';
+                showToast('Registration successful! Welcome to KINTSUGI Club.');
+                setTimeout(redirectToHome, 600);
+            } else {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = origHtml;
+                errorDiv.querySelector('.error-msg').innerText = res.message || 'OTP verification failed.';
+                errorDiv.style.display = 'flex';
+            }
+        }
+
+        async function handleResendRegistrationOTP() {
+            const email = document.getElementById('signupEmail').value.trim();
+            const errorDiv = document.getElementById('regOtpError');
+            const resendBtn = document.getElementById('resendRegOtpBtn');
+
+            if (!email) return;
+
+            resendBtn.disabled = true;
+            errorDiv.style.display = 'none';
+
+            const res = await resendRegistrationOTP(email);
+            if (res.success) {
+                showToast(res.message || 'A new OTP code has been sent to your email.');
+                startResendCooldownTimer(60);
+            } else {
+                errorDiv.querySelector('.error-msg').innerText = res.message || 'Could not resend OTP.';
+                errorDiv.style.display = 'flex';
+                if (res.cooldownRemainingSeconds) {
+                    startResendCooldownTimer(res.cooldownRemainingSeconds);
+                } else {
+                    resendBtn.disabled = false;
+                }
+            }
+        }
+
+        // Mock Social Auth
+        function mockSocialAuth(provider) {
+            const demoUser = {
+                username: provider.toLowerCase().replace(/[^a-z0-9]/g, '_') + '_guest',
+                email: `guest@${provider.toLowerCase().replace(/\s+/g, '')}.com`
+            };
+            localStorage.setItem('gourmet_current_user', JSON.stringify(demoUser));
+            showToast(`Authenticated via ${provider}! Redirecting...`);
+            setTimeout(redirectToHome, 600);
+        }
+
+        // Forgot Modal & OTP Handlers
+        function openForgotModal(e) {
+            if (e) e.preventDefault();
+            const modal = document.getElementById('forgotModal');
+            if (modal) {
+                resetForgotWizard();
+                modal.classList.add('open');
+            }
+        }
+
+        function closeForgotModal() {
+            const modal = document.getElementById('forgotModal');
+            if (modal) modal.classList.remove('open');
+        }
+
+        function resetForgotWizard() {
+            document.getElementById('forgotStep1Form').style.display = 'flex';
+            document.getElementById('forgotStep2Form').style.display = 'none';
+            document.getElementById('forgotError').style.display = 'none';
+        }
+
+        async function handleRequestOTP(e) {
+            e.preventDefault();
+            const email = document.getElementById('forgotEmail').value.trim();
+            const btn = document.getElementById('requestOTPBtn');
+            const errorDiv = document.getElementById('forgotError');
+            const origHtml = btn.innerHTML;
+
+            if (!email) return;
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Sending OTP Email...</span>';
+            errorDiv.style.display = 'none';
+
+            const res = await initiateForgotPassword(email);
+            btn.disabled = false;
+            btn.innerHTML = origHtml;
+
+            if (res.success) {
+                document.getElementById('sentEmailLabel').innerText = email;
+                document.getElementById('forgotStep1Form').style.display = 'none';
+                document.getElementById('forgotStep2Form').style.display = 'flex';
+                showToast(res.message);
+            } else {
+                errorDiv.querySelector('.error-msg').innerText = res.message || 'Could not send OTP email.';
+                errorDiv.style.display = 'flex';
+            }
+        }
+
+        async function handleResetPasswordOTP(e) {
+            e.preventDefault();
+            const email = document.getElementById('forgotEmail').value.trim();
+            const otp = document.getElementById('otpCode').value.trim();
+            const newPassword = document.getElementById('newPasscode').value;
+            const btn = document.getElementById('resetPassBtn');
+            const errorDiv = document.getElementById('forgotError');
+            const origHtml = btn.innerHTML;
+
+            if (!email || !otp || !newPassword) return;
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Verifying OTP & Updating Passcode...</span>';
+            errorDiv.style.display = 'none';
+
+            // 1. Verify OTP
+            const verifyRes = await verifyForgotPasswordOTP(email, otp);
+            if (!verifyRes.success) {
+                btn.disabled = false;
+                btn.innerHTML = origHtml;
+                errorDiv.querySelector('.error-msg').innerText = verifyRes.message || 'Invalid or expired OTP code.';
+                errorDiv.style.display = 'flex';
+                return;
+            }
+
+            // 2. Reset Password
+            const resetRes = await resetPasswordWithOTP(email, otp, newPassword, newPassword);
+            btn.disabled = false;
+            btn.innerHTML = origHtml;
+
+            if (resetRes.success) {
+                closeForgotModal();
+                showToast('Password updated successfully! Please login with your new password.');
+                document.getElementById('loginUsername').value = email;
+                document.getElementById('loginPassword').value = newPassword;
+            } else {
+                errorDiv.querySelector('.error-msg').innerText = resetRes.message || 'Password update failed.';
+                errorDiv.style.display = 'flex';
+            }
+        }
+
+        // Zen Toast
+        function showToast(msg) {
+            const toast = document.getElementById('zenToast');
+            const toastMsg = document.getElementById('zenToastMsg');
+            if (!toast || !toastMsg) return;
+            toastMsg.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initParticles();
+            // Seed initial demo chef and vip users
+            const users = JSON.parse(localStorage.getItem('gourmet_users') || '[]');
+            if (!users.some(u => u.username === 'chef')) {
+                users.push({ username: 'chef', email: 'chef@kintsugi.com', password: 'password' });
+            }
+            if (!users.some(u => u.username === 'vip_guest')) {
+                users.push({ username: 'vip_guest', email: 'vip@kintsugi.com', password: 'omakase2026' });
+            }
+            localStorage.setItem('gourmet_users', JSON.stringify(users));
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe & Heritage Story - KINTSUGI (金継ぎ)</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2307070b'/><rect x='6' y='6' width='88' height='88' rx='14' fill='none' stroke='%23d4af37' stroke-width='4'/><text x='50' y='69' font-size='54' font-family='serif' font-weight='bold' text-anchor='middle' fill='%23f3c68f'>金</text></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Three.js for 3D Motion Background -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- 3D WebGL Motion Background Stage -->
+    <div id="webgl-canvas-container"></div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="index.html" class="nav-brand">
+            <span class="kanji-stamp">金</span>
+            <div class="brand-text-wrap">
+                <span class="brand-name">KINTSUGI</span>
+                <span class="brand-sub">ARTISANAL JAPANESE</span>
+            </div>
+        </a>
+        
+        <div class="nav-menu">
+            <a href="index.html" class="nav-link">
+                <i class="fas fa-arrow-left"></i> Back to 3D Showcase & Menu
+            </a>
+            <a href="index.html#grandMenu" class="nav-link">
+                <i class="fas fa-utensils"></i> Grand Menu
+            </a>
+        </div>
+
+        <div class="nav-actions">
+            <!-- Chef & Hotel Kitchen Portal Button -->
+            <button class="btn-kitchen-portal" id="openKitchenPortalBtn" title="Chef & Hotel Kitchen Display System">
+                <i class="fas fa-utensils"></i> <span>Kitchen & Orders</span>
+            </button>
+
+            <!-- Dynamic User Auth Container -->
+            <div class="nav-user" id="userNavContainer"></div>
+        </div>
+    </nav>
+
+    <!-- Recipe Hero Banner -->
+    <header class="recipe-details-header" id="recipeDetailHero" style="background-image: url('images/japanese_sushi_platter_1786549536224.png');">
+        <div class="header-content-overlay">
+            <div style="max-width: 1200px; margin: 0 auto; width: 100%;">
+                <a href="index.html" class="back-to-home">
+                    <i class="fas fa-chevron-left"></i> Return to Grand Menu
+                </a>
+                
+                <div class="details-cuisine" id="recipeDetailCuisine">JAPANESE HAUTE CUISINE</div>
+                <h1 class="details-title" id="recipeDetailTitle">Imperial Dragon King Nigiri</h1>
+                
+                <div class="details-quick-meta">
+                    <div class="details-rating" id="recipeDetailRating">
+                        <i class="fas fa-star"></i> 4.95
+                    </div>
+                    <div class="details-meta-pill">
+                        <i class="far fa-clock"></i>
+                        <span id="recipeDetailTotalTime">25 mins</span>
+                    </div>
+                    <div class="details-meta-pill">
+                        <i class="fas fa-award"></i>
+                        <span id="recipeDetailDifficulty">Master Craft</span>
+                    </div>
+                    <div class="details-meta-pill">
+                        <i class="fas fa-fire"></i>
+                        <span id="recipeDetailCalories">420 kcal</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Grid Section -->
+    <main class="details-main-section">
+        <!-- Left: Ingredients Checklist & Step-by-Step Instructions -->
+        <article class="details-content-card glass">
+            <!-- Culinary Story & Origins -->
+            <section style="margin-bottom: 2.5rem;">
+                <h3 class="section-subtitle">
+                    <i class="fas fa-scroll"></i> Culinary Heritage & Preparation Philosophy
+                </h3>
+                <p id="recipeDetailStory" style="color: var(--text-secondary); line-height: 1.7; font-size: 0.95rem;">
+                    Prepared according to ancient Kaiseki techniques with seasonal ingredients selected at the peak of flavor.
+                </p>
+            </section>
+
+            <!-- Ingredients Checklist -->
+            <section>
+                <h3 class="section-subtitle">
+                    <i class="fas fa-carrot"></i> Artisanal Ingredients Checklist
+                </h3>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">
+                    Check off ingredients as you prepare them in your kitchen:
+                </p>
+                <div class="ingredients-list" id="recipeDetailIngredients">
+                    <!-- Dynamic -->
+                </div>
+            </section>
+
+            <!-- Preparation Steps -->
+            <section style="margin-top: 3rem;">
+                <h3 class="section-subtitle">
+                    <i class="fas fa-fire-alt"></i> Master Chef Step-by-Step Method
+                </h3>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem;">
+                    Click each step as you complete it:
+                </p>
+                <div class="instructions-list" id="recipeDetailInstructions">
+                    <!-- Dynamic -->
+                </div>
+            </section>
+        </article>
+
+        <!-- Right: Nutrition, Sake Pairing, Favorites, and Chef Notes -->
+        <aside class="details-sidebar-card glass">
+            <!-- Sommelier Sake Pairing Card -->
+            <section class="modal-pairing-card" style="margin-bottom: 1rem;">
+                <i class="fas fa-wine-bottle"></i>
+                <div>
+                    <div class="pairing-info-title">Sommelier Sake Recommendation</div>
+                    <div class="pairing-info-text" id="recipeDetailPairing">Dassai 23 Junmai Daiginjo</div>
+                </div>
+            </section>
+
+            <!-- Nutrition Info -->
+            <section>
+                <h3 class="section-subtitle" style="font-size: 1.25rem;">
+                    <i class="fas fa-chart-pie"></i> Nutrition Profile
+                </h3>
+                <div class="nutrition-grid">
+                    <div class="nutrition-item">
+                        <div class="nutrition-value" id="recipeNutrCalories">420</div>
+                        <div class="nutrition-label">Calories</div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-value" id="recipeNutrPrep">18m</div>
+                        <div class="nutrition-label">Prep Time</div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-value" id="recipeNutrCook">0m</div>
+                        <div class="nutrition-label">Cook Time</div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-value" id="recipeNutrServings">2</div>
+                        <div class="nutrition-label">Servings</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Action Buttons -->
+            <section class="sidebar-actions">
+                <button class="btn btn-primary" id="btnToggleFavoriteDetail" style="width: 100%;">
+                    <i class="far fa-heart"></i> Add to Favorites
+                </button>
+                <button class="btn btn-secondary" onclick="window.print()" style="width: 100%;">
+                    <i class="fas fa-print"></i> Print Recipe Card
+                </button>
+            </section>
+
+            <!-- Personal Notes & Reviews Section -->
+            <section>
+                <h3 class="section-subtitle" style="font-size: 1.25rem;">
+                    <i class="fas fa-comment-alt"></i> Chef & Guest Notes
+                </h3>
+                <div class="comments-section">
+                    <form class="comment-form" onsubmit="handleAddComment(event)">
+                        <textarea id="commentInput" placeholder="Add your culinary tasting notes or tips..." rows="3" required></textarea>
+                        <button type="submit" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem; align-self: flex-end;">
+                            Post Tasting Note
+                        </button>
+                    </form>
+                    
+                    <div class="comments-list" id="recipeCommentsList">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+            </section>
+        </aside>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-bottom-bar" style="border-top: none; padding-top: 0;">
+            &copy; 2026 KINTSUGI Japanese Dining. Master Kaiseki & Artisanal Gastronomy.
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/three-background.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/avatars.js"></script>
+    <script src="js/profile.js"></script>
+    <script src="js/kitchen.js"></script>
+    <script src="js/recipe.js"></script>
+</body>
+</html>

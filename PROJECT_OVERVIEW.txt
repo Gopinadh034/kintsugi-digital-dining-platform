@@ -1,0 +1,92 @@
+================================================================================
+KINTSUGI (金継ぎ) — Artisanal Japanese Haute Gastronomy & 3D Dining Platform
+Executive Client Presentation & Technical Project Overview
+================================================================================
+
+1. EXECUTIVE SUMMARY
+--------------------------------------------------------------------------------
+KINTSUGI is a state-of-the-art, full-stack digital dining platform designed for
+high-end artisanal Japanese restaurants and luxury gastronomy brands. Inspired
+by the Japanese art of repairing broken pottery with gold (Kintsugi), the
+platform marries timeless aesthetics with cutting-edge web technology:
+interactive 3D WebGL visuals, bank-grade Email OTP authentication, real-time
+reservation workflows, and a robust MySQL database backend.
+
+
+2. CORE HIGHLIGHTS & CLIENT VALUE PROPOSITIONS
+--------------------------------------------------------------------------------
+A. Immersive 3D WebGL Showcase & Dark Zen Luxury Aesthetics:
+   - Interactive 3D Stage: Custom Three.js WebGL rendering for 3D card tilt
+     effects, ambient depth particle clouds, and dynamic lighting.
+   - Dark Zen Design System: Premium dark palette (#07070b) accented with
+     polished gold (#d4af37), cherry blossom pink, and custom typography.
+   - Vector Iconography: Fully integrated FontAwesome 6 vector icons.
+
+B. Enterprise Email OTP Authentication System:
+   - Gmail SMTP Dispatch: Live Gmail SMTP integration via Nodemailer.
+   - Multi-Step Member Registration:
+     1. Full Name, Email, and Passcode input.
+     2. Single-use 6-digit OTP code sent directly to email (valid for 5 mins).
+     3. Interactive 60-second Resend OTP Cooldown Timer to prevent spamming.
+   - Passcode Recovery Wizard: 2-step verification wizard for forgotten passcodes.
+   - Cryptographic Security: Passwords stored using bcryptjs salted hashing,
+     protected by JSON Web Tokens (JWT).
+
+C. Dual-Storage Database Architecture (MySQL Workbench + JSON Backup):
+   - Primary Relational Engine: Direct integration with MySQL Workbench (kintsugi_db),
+     automatically creating and managing tables:
+     * users: Member profiles, email addresses, roles, and hashed credentials.
+     * reservations: Counter Omakase & private booth bookings.
+     * orders: Food items, cart JSON structures, total amounts, and status.
+   - Zero-Downtime Resilience: Seamless automatic fallback to local JSON DB file
+     storage if external database services are offline.
+
+D. Grand Menu & Recipe Engine:
+   - Dynamic API Integration: Live fetching & filtering via external recipe APIs.
+   - Multi-Filter Bar: Real-time filtering by search keywords, meal categories,
+     tag filtering, and price sorting.
+   - Interactive Cart HUD: Floating cart drawer with real-time total calculations.
+
+
+3. TECHNOLOGY STACK OVERVIEW
+--------------------------------------------------------------------------------
+- Frontend UI/UX : HTML5, Vanilla CSS3, Modern ES6+ JavaScript
+- 3D Rendering   : Three.js, WebGL Canvas API, Perspective Raycasting
+- Backend Server : Node.js, Express.js REST API
+- Security & Auth: Nodemailer (Gmail SMTP), Bcryptjs, JWT, Dotenv
+- Database Engine: MySQL 8.0 Workbench (mysql2/promise) + JSON Backup
+
+
+4. STEP-BY-STEP CLIENT DEMONSTRATION GUIDE
+--------------------------------------------------------------------------------
+Step 1: The Landing Experience (Hero & 3D Showcase)
+        Highlight the WebGL 3D background animation and 3D card tilt effects.
+
+Step 2: Member Registration & Live Email OTP Flow
+        Navigate to login.html, register with client's email, show the instant
+        6-digit OTP delivery to their inbox, and highlight the 60s cooldown timer.
+
+Step 3: Passcode Recovery Wizard
+        Click "Forgot passcode / OTP Reset?" and demonstrate the 2-step OTP reset.
+
+Step 4: Grand Menu & Cart System
+        Showcase real-time keyword search, meal filters, add items to cart,
+        and place an order.
+
+Step 5: MySQL Workbench Verification
+        Open MySQL Workbench and run:
+        USE kintsugi_db;
+        SELECT * FROM users;
+        Show the client their newly created account stored inside MySQL!
+
+
+5. SECURITY & COMPLIANCE CHECKLIST
+--------------------------------------------------------------------------------
+[x] Zero plain-text passwords stored in the database.
+[x] Secrets and SMTP credentials isolated inside .env file.
+[x] Rate-limiting and brute-force protection (max 5 failed attempts lock session).
+[x] Clean RESTful backend architecture ready for production deployment.
+
+================================================================================
+KINTSUGI Haute Gastronomy Backend Server: http://localhost:5000
+================================================================================

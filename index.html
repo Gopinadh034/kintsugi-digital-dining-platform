@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KINTSUGI (金継ぎ) - Haute Japanese Gastronomy & 3D Interactive Showcase</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2307070b'/><rect x='6' y='6' width='88' height='88' rx='14' fill='none' stroke='%23d4af37' stroke-width='4'/><text x='50' y='69' font-size='54' font-family='serif' font-weight='bold' text-anchor='middle' fill='%23f3c68f'>金</text></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800&family=Shippori+Mincho:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Three.js for 3D Motion Background & Menu Display -->
+    <script src="js/three.min.js"></script>
+    <script>if (typeof THREE === 'undefined') { document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>'); }</script>
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- 3D WebGL Motion Background Stage -->
+    <div id="webgl-canvas-container"></div>
+
+    <!-- Japanese Background Calligraphy Watermark -->
+    <div class="kanji-watermark">金継ぎ</div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="index.html" class="nav-brand">
+            <span class="kanji-stamp">金</span>
+            <div class="brand-text-wrap">
+                <span class="brand-name">KINTSUGI</span>
+                <span class="brand-sub">ARTISANAL JAPANESE</span>
+            </div>
+        </a>
+        
+        <div class="nav-menu">
+            <a href="#hero" class="nav-link active">
+                <i class="fas fa-cube"></i> 3D Showcase
+            </a>
+            <a href="#grandMenu" class="nav-link">
+                <i class="fas fa-utensils"></i> Grand Menu
+            </a>
+            <a href="#" class="nav-link" onclick="filterByCategory('Favorites', null)">
+                <i class="fas fa-heart"></i> Favorites
+            </a>
+            <a href="#aboutStory" class="nav-link">
+                <i class="fas fa-torii-gate"></i> Omakase Story
+            </a>
+        </div>
+
+        <div class="nav-actions">
+            <!-- Chef & Hotel Kitchen Portal Button -->
+            <button class="btn-kitchen-portal" id="openKitchenPortalBtn" title="Chef & Hotel Kitchen Display System">
+                <i class="fas fa-utensils"></i> <span>Kitchen & Orders</span>
+            </button>
+
+            <!-- Zen Soundscape Toggle -->
+            <button class="sound-toggle-btn" id="soundToggleBtn" onclick="window.zenAudio && window.zenAudio.toggleMute()" title="Toggle Japanese Zen Soundscape">
+                <i class="fas fa-volume-mute"></i> <span>Audio Off</span>
+            </button>
+
+            <!-- Order Tray / Cart Toggle -->
+            <button class="cart-toggle-btn" onclick="toggleCartDrawer(true)" title="View Order Tray">
+                <i class="fas fa-shopping-bag"></i>
+                <span class="cart-badge" id="cartBadgeCount" style="display: none;">0</span>
+            </button>
+
+            <!-- Table Reservation Button -->
+            <button class="btn-reserve-nav" onclick="openReservationModal()">
+                <i class="far fa-calendar-alt"></i> Reserve Table
+            </button>
+
+            <!-- Dynamic User Auth Container -->
+            <div class="nav-user" id="userNavContainer"></div>
+        </div>
+    </nav>
+
+    <!-- Hero 3D Motion Showcase Section -->
+    <section class="hero-3d-section" id="hero">
+        <div class="hero-main-layout">
+            <!-- Left Hero Content -->
+            <div class="hero-text-content">
+                <div class="hero-brand-tag">
+                    <span class="kanji-stamp" style="width: 22px; height: 22px; font-size: 0.7rem;">極</span>
+                    <span>Haute Japanese Kaiseki & 3D Dining</span>
+                </div>
+                
+                <h1 class="hero-title">
+                    The Art of <br>
+                    <span class="text-gradient-gold">Modern Kaiseki</span> & <br>
+                    <span class="text-gradient-crimson">Master Sushi</span>
+                </h1>
+
+                <p class="hero-subtitle">
+                    Immerse in an interactive 3D dining journey where heritage culinary craftsmanship meets modern sensory innovation. Savor A5 Miyazaki Wagyu, aged Otoro, and 24-hour broths.
+                </p>
+
+                <div class="hero-cta-group">
+                    <a href="#grandMenu" class="btn-hero-primary">
+                        <i class="fas fa-compass"></i> Explore Grand Menu
+                    </a>
+                    <button class="btn-hero-secondary" onclick="openReservationModal()">
+                        <i class="fas fa-calendar-check"></i> Book Chef's Counter
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Hero: Live 3D Dish Overlay HUD -->
+            <div class="hero-dish-card-hud glass-gold-border">
+                <div class="hud-top-meta">
+                    <span class="hud-dish-kanji" id="heroDishKanji">極上 龍王 握り盛り合わせ</span>
+                    <span class="hud-rating-pill" id="heroDishRating"><i class="fas fa-star"></i> 4.95 (142 reviews)</span>
+                </div>
+
+                <h3 class="hud-dish-title" id="heroDishTitle">Imperial Dragon King Nigiri Platter</h3>
+
+                <p class="hud-dish-desc" id="heroDishDesc">
+                    Tasting flight of Norwegian Bluefin Otoro, Wild King Salmon, Hokkaido Sea Urchin, and Caspian Caviar draped with 24-karat gold leaves.
+                </p>
+
+                <div class="hud-dish-specs">
+                    <div class="hud-spec-item"><i class="far fa-clock"></i> <span id="heroDishPrep">18 mins prep</span></div>
+                    <div class="hud-spec-item"><i class="fas fa-award"></i> Michelin Special</div>
+                    <div class="hud-spec-item"><i class="fas fa-fish"></i> Fresh Edomae</div>
+                </div>
+
+                <div class="hud-dish-bottom">
+                    <div class="hud-price-tag" id="heroDishPrice">$68</div>
+                    <div class="hud-actions-group">
+                        <button class="btn-hud-3d" id="heroDish3DBtn">
+                            <i class="fas fa-cube"></i> Inspect in 3D
+                        </button>
+                        <button class="btn-hud-add" id="heroDishAddBtn">
+                            <i class="fas fa-plus"></i> Add to Order
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hero Bottom: 3D Stage Carousel Switcher & Viewport Camera Controls -->
+        <div class="hero-stage-controls-hud">
+            <div class="hero-dish-pills-wrap">
+                <button class="hero-dish-pill active" onclick="selectHero3DDish(0)">
+                    <i class="fas fa-fish"></i> <span>Imperial Nigiri</span>
+                </button>
+                <button class="hero-dish-pill" onclick="selectHero3DDish(1)">
+                    <i class="fas fa-utensils"></i> <span>Black Garlic Ramen</span>
+                </button>
+                <button class="hero-dish-pill" onclick="selectHero3DDish(2)">
+                    <i class="fas fa-drumstick-bite"></i> <span>Miyazaki A5 Wagyu</span>
+                </button>
+                <button class="hero-dish-pill" onclick="selectHero3DDish(3)">
+                    <i class="fas fa-mug-hot"></i> <span>Matcha Gold Dome</span>
+                </button>
+                <button class="hero-dish-pill" onclick="selectHero3DDish(4)">
+                    <i class="fas fa-cookie-bite"></i> <span>Truffle Gyoza</span>
+                </button>
+                <button class="hero-dish-pill" onclick="selectHero3DDish(5)">
+                    <i class="fas fa-wine-glass-alt"></i> <span>Daiginjo Sake Flight</span>
+                </button>
+            </div>
+
+            <div class="stage-hud-tools">
+                <button class="hud-tool-btn" id="prevDish3DBtn" title="Previous 3D Dish">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="hud-tool-btn" id="nextDish3DBtn" title="Next 3D Dish">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <button class="hud-tool-btn active" id="toggleOrbitBtn" title="Toggle 3D Orbit">
+                    <i class="fas fa-pause"></i> <span>Pause 3D Orbit</span>
+                </button>
+                <button class="hud-tool-btn camera-mode-pill active" onclick="set3DCameraMode('cinematic', this)" title="Cinematic Camera">
+                    <i class="fas fa-video"></i>
+                </button>
+                <button class="hud-tool-btn camera-mode-pill" onclick="set3DCameraMode('topdown', this)" title="Chef's Top-Down View">
+                    <i class="fas fa-eye"></i>
+                </button>
+                <button class="hud-tool-btn camera-mode-pill" onclick="set3DCameraMode('focus', this)" title="Macro 3D Focus">
+                    <i class="fas fa-search-plus"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Grand Menu Section -->
+    <section class="menu-section-wrapper" id="grandMenu">
+        <div class="section-header-centered">
+            <div class="section-kanji-tag">特選 献立 表</div>
+            <h2 class="section-main-title">Artisanal <span class="text-gradient-gold">Grand Menu</span></h2>
+            <p class="section-main-desc">
+                Every creation embodies centuries of Japanese culinary mastery, seasonal ingredients, and meticulous aesthetic presentation.
+            </p>
+        </div>
+
+        <!-- Menu Filter Controls HUD & Live DummyJSON API Station -->
+        <div class="menu-controls-hud">
+            <!-- Search Row (Long full-width search bar) -->
+            <div class="search-and-sort-row">
+                <div class="search-input-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="recipeSearchInput" placeholder="Search recipes via API (e.g. pizza, ramen, pasta, chicken, wagyu)..." oninput="handleSearch(event)">
+                    <button class="search-clear-btn" id="searchClearBtn" onclick="clearSearch()" style="display:none;" title="Clear Search">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filters Row: Sort, Meal Types, Recipe Tags side-by-side -->
+            <div class="filters-select-row">
+                <div class="sort-wrapper">
+                    <select id="sortBySelect" onchange="handleSortChange(this.value)">
+                        <option value="recommended">Sort: Chef's Omakase Select</option>
+                        <option value="rating">Rating: Highest First</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="time">Prep Time: Quickest</option>
+                        <option value="calories">Calories: Lightest</option>
+                    </select>
+                </div>
+
+                <div class="sort-wrapper">
+                    <select id="mealTypeSelect" onchange="filterByMealType(this.value, null)">
+                        <option value="All">Meal Type: All Meals</option>
+                        <option value="Dinner">Dinner (夕食)</option>
+                        <option value="Lunch">Lunch (昼食)</option>
+                        <option value="Breakfast">Breakfast (朝食)</option>
+                        <option value="Snack">Snack (間食)</option>
+                        <option value="Dessert">Dessert (甘味)</option>
+                        <option value="Beverage">Beverage (美酒)</option>
+                    </select>
+                </div>
+
+                <div class="sort-wrapper">
+                    <select id="tagSelect" onchange="filterByTag(this.value, null)">
+                        <option value="All">Recipe Tag: All Tags</option>
+                        <option value="Italian">Italian Cuisine</option>
+                        <option value="Asian">Asian Cuisine</option>
+                        <option value="Japanese">Japanese Cuisine</option>
+                        <option value="Pizza">Pizza Specialty</option>
+                        <option value="Pasta">Pasta Dishes</option>
+                        <option value="Vegetarian">Vegetarian</option>
+                        <option value="Chicken">Poultry & Chicken</option>
+                        <option value="Beef">Wagyu & Beef</option>
+                        <option value="Seafood">Edomae Seafood</option>
+                        <option value="Dessert">Wagashi Dessert</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Meta Count -->
+        <div class="results-meta-bar">
+            <div id="resultsCount">Loading artisanal menu...</div>
+            <div style="font-size: 0.8rem; color: var(--gold-bright);">
+                <i class="fas fa-leaf"></i> Live Synchronized with DummyJSON API & Kaiseki Specials
+            </div>
+        </div>
+
+        <!-- Dynamic Japanese Dishes Grid -->
+        <div class="japanese-grid" id="recipesGrid">
+            <!-- Populated dynamically via app.js -->
+        </div>
+
+        <!-- Empty Grid State -->
+        <div id="emptyGridState" class="empty-cart-state" style="display: none; padding: 4rem 1rem;">
+            <i class="fas fa-utensils"></i>
+            <h3 style="font-size: 1.5rem; margin-top: 1rem;">No Recipes Found</h3>
+            <p>No recipes match the active API query or filter.</p>
+            <button class="btn-hero-secondary" onclick="resetAllApiFilters()" style="margin-top: 1rem;">
+                <i class="fas fa-redo"></i> Reset All Filters & Fetch All Recipes
+            </button>
+        </div>
+    </section>
+
+    <!-- Culinary Story & Omakase Section -->
+    <section class="menu-section-wrapper" id="aboutStory" style="margin-top: 2rem;">
+        <div class="hero-dish-card-hud glass" style="padding: 3rem; background: rgba(12, 12, 20, 0.85);">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+                <div>
+                    <div class="hud-dish-kanji">金継ぎの精神</div>
+                    <h2 style="font-size: 2.4rem; margin: 0.5rem 0 1rem;">The Philosophy of <span class="text-gradient-gold">Kintsugi</span></h2>
+                    <p style="color: var(--text-secondary); line-height: 1.7; font-size: 0.95rem; margin-bottom: 1.5rem;">
+                        Named after the ancient Japanese art of repairing broken pottery with liquid gold, <strong>KINTSUGI</strong> celebrates the beauty of imperfection, seasonality, and time-honored discipline. Every dish is a dialogue between nature and master craftsmanship.
+                    </p>
+                    <div style="display: flex; gap: 2rem;">
+                        <div>
+                            <div style="font-size: 2rem; font-family: 'Cinzel', serif; color: var(--gold-bright); font-weight: 800;">3 Michelin</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Trained Master Chefs</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 2rem; font-family: 'Cinzel', serif; color: var(--crimson-primary); font-weight: 800;">100% Direct</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Toyosu Market Sourcing</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--glass-border);">
+                    <img src="images/japanese_sushi_platter_1786549536224.png" alt="Omakase Platter" style="width: 100%; height: 320px; object-fit: cover;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3D DISH INSPECTION & RECIPE STORY MODAL -->
+    <div class="modal-overlay" id="dishDetailModal" onclick="if(event.target === this) close3DDishModal()">
+        <div class="dish-detail-modal-container glass">
+            <button class="modal-close-btn" onclick="close3DDishModal()">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <div class="modal-content-grid">
+                <!-- Left: Visual & Flavor Profile Radar -->
+                <div class="modal-left-visual">
+                    <div class="modal-dish-img-box">
+                        <img id="modalDishImage" src="" alt="Dish Preview">
+                    </div>
+
+                    <div class="modal-flavor-radar-box">
+                        <div class="radar-title"><i class="fas fa-chart-pie"></i> Kaiseki Flavor Matrix</div>
+                        
+                        <div class="radar-bar-row">
+                            <span>Umami (旨味)</span>
+                            <div class="radar-track"><div class="radar-fill" id="radarUmami" style="width: 90%;"></div></div>
+                        </div>
+                        <div class="radar-bar-row">
+                            <span>Sweetness (甘味)</span>
+                            <div class="radar-track"><div class="radar-fill" id="radarSweetness" style="width: 45%;"></div></div>
+                        </div>
+                        <div class="radar-bar-row">
+                            <span>Heat (辛味)</span>
+                            <div class="radar-track"><div class="radar-fill" id="radarHeat" style="width: 20%;"></div></div>
+                        </div>
+                        <div class="radar-bar-row">
+                            <span>Richness (濃厚さ)</span>
+                            <div class="radar-track"><div class="radar-fill" id="radarRichness" style="width: 85%;"></div></div>
+                        </div>
+                        <div class="radar-bar-row">
+                            <span>Acidity (酸味)</span>
+                            <div class="radar-track"><div class="radar-fill" id="radarAcidity" style="width: 35%;"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Details, Heritage Story, Ingredients & Pairing -->
+                <div class="modal-right-details">
+                    <div class="modal-kanji-sub" id="modalDishKanji">日本料理</div>
+                    <h2 class="modal-dish-title" id="modalDishTitle">Dish Name</h2>
+                    
+                    <div class="modal-rating-price-bar">
+                        <div class="hud-rating-pill" id="modalDishRating"><i class="fas fa-star"></i> 4.9</div>
+                        <div class="modal-price-display" id="modalDishPrice">$00</div>
+                    </div>
+
+                    <p class="modal-story-text" id="modalDishStory">
+                        Heritage culinary backstory.
+                    </p>
+
+                    <!-- Sake Pairing -->
+                    <div class="modal-pairing-card">
+                        <i class="fas fa-wine-bottle"></i>
+                        <div>
+                            <div class="pairing-info-title">Sommelier Sake Pairing (相性の良い美酒)</div>
+                            <div class="pairing-info-text" id="modalDishPairing">Dassai 23 Junmai Daiginjo</div>
+                        </div>
+                    </div>
+
+                    <!-- Ingredients Checklist -->
+                    <div>
+                        <div style="font-size: 0.85rem; font-weight: 700; color: var(--gold-bright); text-transform: uppercase; margin-bottom: 0.75rem;">
+                            Key Artisanal Ingredients
+                        </div>
+                        <ul class="modal-ingredients-list" id="modalDishIngredients"></ul>
+                    </div>
+
+                    <div class="modal-footer-actions">
+                        <button class="btn-hero-primary" id="modalAddOrderBtn" style="flex: 1;">
+                            <i class="fas fa-plus"></i> Add to Order Tray
+                        </button>
+                        <a href="#" id="modalFullRecipeLink" class="btn-hero-secondary" style="flex: 1; justify-content: center;">
+                            <i class="fas fa-book-open"></i> Full Chef Recipe
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ORDER TRAY / CART SLIDE-OVER DRAWER -->
+    <div class="cart-drawer-overlay" id="cartOverlay" onclick="toggleCartDrawer(false)"></div>
+    <aside class="cart-drawer" id="cartDrawer">
+        <div class="cart-drawer-header">
+            <div class="cart-drawer-title">
+                <span class="kanji-stamp" style="font-size: 0.8rem; width: 28px; height: 28px;">膳</span>
+                <span>Omakase Order Tray</span>
+            </div>
+            <button class="btn-close-cart" onclick="toggleCartDrawer(false)">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="cart-items-list" id="cartItemsList">
+            <!-- Dynamic items list -->
+        </div>
+
+        <div class="cart-drawer-footer">
+            <div class="cart-summary-line">
+                <span>Subtotal</span>
+                <span id="cartSubtotalPrice">$0.00</span>
+            </div>
+            <div class="cart-summary-line">
+                <span>Tax & Service (8%)</span>
+                <span>Included</span>
+            </div>
+            <div class="cart-summary-total">
+                <span>Total</span>
+                <span id="cartTotalPrice">$0.00</span>
+            </div>
+            <button class="btn-checkout" onclick="handleCheckout()">
+                <i class="fas fa-credit-card"></i> Proceed to Checkout
+            </button>
+        </div>
+    </aside>
+
+    <!-- TABLE RESERVATION MODAL -->
+    <div class="modal-overlay" id="reservationModal" onclick="if(event.target === this) closeReservationModal()">
+        <div class="reservation-modal-box">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <span class="kanji-stamp" style="font-size: 0.75rem; width: 26px; height: 26px;">席</span>
+                    <span style="font-size: 0.85rem; color: var(--gold-bright); font-weight: 700; margin-left: 0.5rem; text-transform: uppercase;">Private Dining & Counter</span>
+                </div>
+                <button class="modal-close-btn" style="position: static;" onclick="closeReservationModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <h3 style="font-size: 1.8rem; margin: 0.75rem 0 0.25rem;">Reserve Your <span class="text-gradient-gold">Omakase Seat</span></h3>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Experience bespoke Kaiseki course prepared right before your eyes.</p>
+
+            <form class="res-form" onsubmit="handleReservationSubmit(event)">
+                <div class="res-form-group">
+                    <label>Guest Name</label>
+                    <input type="text" id="resName" placeholder="e.g. Alexander Wright" required>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="res-form-group">
+                        <label>Party Size</label>
+                        <select id="resGuests">
+                            <option value="2 Guests">2 Guests (Chef's Counter)</option>
+                            <option value="1 Guest">1 Guest (Solo Omakase)</option>
+                            <option value="4 Guests">4 Guests (Private Tatami)</option>
+                            <option value="6+ Guests">6+ Guests (VIP Room)</option>
+                        </select>
+                    </div>
+                    <div class="res-form-group">
+                        <label>Dining Date</label>
+                        <input type="date" id="resDate" required value="2026-08-15">
+                    </div>
+                </div>
+
+                <div class="res-form-group">
+                    <label>Seating Preference</label>
+                    <select id="resSeating">
+                        <option value="Chef Hinoki Counter">Chef's Hinoki Counter (Front Row)</option>
+                        <option value="Private Tatami Tea Room">Private Tatami Tea Room</option>
+                        <option value="Zen Garden Terrace">Zen Garden Terrace</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-hero-primary" style="margin-top: 0.5rem; width: 100%; justify-content: center;">
+                    <i class="fas fa-check-circle"></i> Confirm Table Reservation
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-inner-grid">
+            <div class="footer-col">
+                <a href="index.html" class="nav-brand" style="margin-bottom: 1rem;">
+                    <span class="kanji-stamp">金</span>
+                    <div class="brand-text-wrap">
+                        <span class="brand-name">KINTSUGI</span>
+                        <span class="brand-sub">ARTISANAL JAPANESE</span>
+                    </div>
+                </a>
+                <p style="color: var(--text-secondary); line-height: 1.6; font-size: 0.9rem; margin-bottom: 1.25rem;">
+                    Artisanal 3D Japanese Haute Gastronomy. Ginza • Tokyo • London • New York.
+                </p>
+                <div style="display: flex; gap: 1rem; color: var(--gold-bright);">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Hours & Dining</h4>
+                <ul>
+                    <li>Lunch Omakase: 11:30 - 14:30</li>
+                    <li>Kaiseki Dinner: 17:30 - 23:00</li>
+                    <li>Late Night Izakaya: 23:00 - 02:00</li>
+                    <li>Closed on Mondays</li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Experience</h4>
+                <ul>
+                    <li><a href="#hero">3D Menu Showcase</a></li>
+                    <li><a href="#grandMenu">Grand Kaiseki Menu</a></li>
+                    <li><a href="login.html">Member Portal</a></li>
+                    <li><a href="#" onclick="openReservationModal()">Private Bookings</a></li>
+                    <li><a href="#" id="footerKitchenBtn">Kitchen & Orders KDS</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Locations</h4>
+                <ul>
+                    <li>Ginza 6-Chome, Chuo-ku, Tokyo</li>
+                    <li>Mayfair, London W1J</li>
+                    <li>Tribeca, New York NY 10013</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom-bar">
+            &copy; 2026 KINTSUGI Japanese Dining. All Rights Reserved. Crafted for Haute Gastronomy.
+        </div>
+    </footer>
+
+    <!-- Application Scripts -->
+    <script src="js/three-background.js"></script>
+    <script src="js/sound-effects.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/avatars.js"></script>
+    <script src="js/profile.js"></script>
+    <script src="js/kitchen.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,327 @@
+{
+  "users": [
+    {
+      "id": "user-chef",
+      "username": "chef",
+      "email": "chef@kintsugi.com",
+      "passwordHash": "$2a$10$wT8m9Z1nK2Yj.3UvLpQ2e.7yM0p4m0a.1/5j1k2l3m4n5o6p7q8r9",
+      "role": "head_chef",
+      "createdAt": "2026-08-14T17:02:47.734Z"
+    },
+    {
+      "id": "user-vip",
+      "username": "vip_guest",
+      "email": "guest@kintsugi.com",
+      "passwordHash": "$2a$10$wT8m9Z1nK2Yj.3UvLpQ2e.7yM0p4m0a.1/5j1k2l3m4n5o6p7q8r9",
+      "role": "vip_member",
+      "createdAt": "2026-08-14T17:02:47.736Z",
+      "phone": "+1 (555) 987-6543",
+      "date_of_birth": "1995-08-15",
+      "gender": "Male",
+      "address": "Ginza Tower Suite 402, Tokyo, Japan",
+      "updatedAt": "2026-08-15T10:26:24.910Z",
+      "avatar_type": "preset",
+      "avatar_id": "samurai_dark",
+      "profile_image": null
+    },
+    {
+      "id": "user-1786726991909",
+      "username": "test_gourmet_1786726988976",
+      "email": "test1786726988979@kintsugi.com",
+      "passwordHash": "$2a$10$zcHnszzstnHfenv5at7Y6esOdVpWI98X1jzxBZCQZP6MKx5niWdvW",
+      "role": "vip_member",
+      "createdAt": "2026-08-14T17:03:11.909Z"
+    },
+    {
+      "id": "user-1786730147639",
+      "username": "zen_master_704",
+      "email": "zenmaster625@kintsugi.com",
+      "passwordHash": "$2a$10$nP6ctbwmAn5ZGTXcPPJ51eoelsmktEb.MRubYJmBvbWh/HvN5FifS",
+      "role": "vip_member",
+      "createdAt": "2026-08-14T17:55:47.639Z"
+    },
+    {
+      "id": "user-1786737499915",
+      "username": "cap",
+      "email": "wolfj7773@gmail.com",
+      "passwordHash": "$2a$10$1J6DQgcyHOT5LnYeZLQXLuT1.JxIpqHRhMJJ5r9B2FByLg3LVxAUO",
+      "role": "vip_member",
+      "createdAt": "2026-08-14T19:58:19.918Z"
+    },
+    {
+      "id": "user-1786737635742",
+      "username": "bala",
+      "email": "nagellabalaji143@gmail.com",
+      "passwordHash": "$2a$10$kyA.r56NcuuQr9ZWoPgRlelSLog9zBgzBqyMbUoRDvZQuF4ZLiRe6",
+      "role": "vip_member",
+      "createdAt": "2026-08-14T20:00:35.742Z"
+    }
+  ],
+  "reservations": [
+    {
+      "id": "res-1786726992378",
+      "guestName": "Lord Tanaka",
+      "guestEmail": "tanaka@domain.com",
+      "guestPhone": "+81-90-1234-5678",
+      "partySize": 4,
+      "date": "2026-08-20",
+      "time": "19:30",
+      "seatingArea": "Counter Omakase",
+      "specialRequests": "Sake pairing required",
+      "status": "Confirmed",
+      "createdAt": "2026-08-14T17:03:12.378Z"
+    }
+  ],
+  "orders": [
+    {
+      "id": "ord-1786726992425",
+      "customerName": "Lord Tanaka",
+      "items": [
+        {
+          "id": 101,
+          "name": "Imperial Dragon King Nigiri Platter",
+          "price": 68,
+          "quantity": 2
+        }
+      ],
+      "totalAmount": 136,
+      "deliveryAddress": "Counter Pickup",
+      "status": "Preparing",
+      "createdAt": "2026-08-14T17:03:12.425Z"
+    },
+    {
+      "id": "ord-1786785632462",
+      "customerName": "Balaji",
+      "items": [
+        {
+          "id": 101,
+          "name": "Imperial Dragon King Nigiri Platter",
+          "kanji": "極上 龍王 握り盛り合わせ",
+          "price": 68,
+          "image": "images/japanese_sushi_platter_1786549536224.png",
+          "quantity": 1
+        }
+      ],
+      "totalAmount": 73.44,
+      "deliveryAddress": "Counter Pickup",
+      "status": "Cooking",
+      "createdAt": "2026-08-15T09:20:32.464Z",
+      "updatedAt": "2026-08-15T10:40:53.451Z"
+    },
+    {
+      "id": "ord-1786785969562",
+      "customerName": "Chef Test Guest",
+      "items": [
+        {
+          "name": "Miyazaki A5 Wagyu Ribeye",
+          "quantity": 2,
+          "price": 95
+        },
+        {
+          "name": "Imperial Junmai Sake",
+          "quantity": 1,
+          "price": 40
+        }
+      ],
+      "totalAmount": 230,
+      "deliveryAddress": "Table 7 — Chef Counter",
+      "status": "Preparing",
+      "createdAt": "2026-08-15T09:26:09.562Z"
+    },
+    {
+      "id": "ord-1786786404158",
+      "customerName": "Chef Test Guest",
+      "items": [
+        {
+          "name": "Miyazaki A5 Wagyu Ribeye",
+          "quantity": 2,
+          "price": 95
+        },
+        {
+          "name": "Imperial Junmai Sake",
+          "quantity": 1,
+          "price": 40
+        }
+      ],
+      "totalAmount": 230,
+      "deliveryAddress": "Table 7 — Chef Counter",
+      "status": "Cooking",
+      "createdAt": "2026-08-15T09:33:24.159Z",
+      "updatedAt": "2026-08-15T09:33:24.176Z"
+    },
+    {
+      "id": "ord-1786786905504",
+      "customerName": "chef",
+      "items": [
+        {
+          "id": 101,
+          "name": "Imperial Dragon King Nigiri Platter",
+          "kanji": "極上 龍王 握り盛り合わせ",
+          "price": 68,
+          "image": "images/japanese_sushi_platter_1786549536224.png",
+          "quantity": 1
+        }
+      ],
+      "totalAmount": 73.44,
+      "deliveryAddress": "Counter Pickup",
+      "status": "Preparing",
+      "createdAt": "2026-08-15T09:41:45.504Z"
+    },
+    {
+      "id": "ord-1786789841440",
+      "customerName": "Chef Test Guest",
+      "items": [
+        {
+          "name": "Miyazaki A5 Wagyu Ribeye",
+          "quantity": 2,
+          "price": 95
+        },
+        {
+          "name": "Imperial Junmai Sake",
+          "quantity": 1,
+          "price": 40
+        }
+      ],
+      "totalAmount": 230,
+      "deliveryAddress": "Table 7 — Chef Counter",
+      "status": "Cooking",
+      "createdAt": "2026-08-15T10:30:41.440Z",
+      "updatedAt": "2026-08-15T10:30:41.454Z"
+    },
+    {
+      "id": "ord-1786790398116",
+      "customerName": "Chef Test Guest",
+      "items": [
+        {
+          "name": "Miyazaki A5 Wagyu Ribeye",
+          "quantity": 2,
+          "price": 95
+        },
+        {
+          "name": "Imperial Junmai Sake",
+          "quantity": 1,
+          "price": 40
+        }
+      ],
+      "totalAmount": 230,
+      "deliveryAddress": "Table 7 — Chef Counter",
+      "status": "Cooking",
+      "createdAt": "2026-08-15T10:39:58.116Z",
+      "updatedAt": "2026-08-15T10:39:58.222Z"
+    },
+    {
+      "id": "ord-1786790623566",
+      "customerName": "Chef Test Guest",
+      "items": [
+        {
+          "name": "Miyazaki A5 Wagyu Ribeye",
+          "quantity": 2,
+          "price": 95
+        },
+        {
+          "name": "Imperial Junmai Sake",
+          "quantity": 1,
+          "price": 40
+        }
+      ],
+      "totalAmount": 230,
+      "deliveryAddress": "Table 7 — Chef Counter",
+      "status": "Cooking",
+      "createdAt": "2026-08-15T10:43:43.567Z",
+      "updatedAt": "2026-08-15T10:43:43.622Z"
+    },
+    {
+      "id": "ord-1786790937346",
+      "customerName": "Chef Test Guest",
+      "items": [
+        {
+          "name": "Miyazaki A5 Wagyu Ribeye",
+          "quantity": 2,
+          "price": 95
+        },
+        {
+          "name": "Imperial Junmai Sake",
+          "quantity": 1,
+          "price": 40
+        }
+      ],
+      "totalAmount": 230,
+      "deliveryAddress": "Table 7 — Chef Counter",
+      "status": "Cooking",
+      "createdAt": "2026-08-15T10:48:57.346Z",
+      "updatedAt": "2026-08-15T10:48:57.387Z"
+    }
+  ],
+  "profile_audit_logs": [
+    {
+      "id": "log-1786738810119-251",
+      "user_id": "user-vip",
+      "change_type": "profile_update",
+      "changes_json": "{\"username\":\"VIP Guest San\",\"phone\":\"+1 (555) 987-6543\",\"date_of_birth\":\"1995-08-15\",\"gender\":\"Male\",\"address\":\"Ginza Tower Suite 402, Tokyo, Japan\"}",
+      "created_at": "2026-08-14T20:20:10.120Z"
+    },
+    {
+      "id": "log-1786738810164-11",
+      "user_id": "user-vip",
+      "change_type": "avatar_update",
+      "changes_json": "{\"avatar_type\":\"preset\",\"avatar_id\":\"samurai_dark\",\"profile_image\":null}",
+      "created_at": "2026-08-14T20:20:10.164Z"
+    },
+    {
+      "id": "log-1786738873450-239",
+      "user_id": "user-vip",
+      "change_type": "profile_update",
+      "changes_json": "{\"username\":\"VIP Guest San\",\"phone\":\"+1 (555) 987-6543\",\"date_of_birth\":\"1995-08-15\",\"gender\":\"Male\",\"address\":\"Ginza Tower Suite 402, Tokyo, Japan\"}",
+      "created_at": "2026-08-14T20:21:13.450Z"
+    },
+    {
+      "id": "log-1786738873471-116",
+      "user_id": "user-vip",
+      "change_type": "avatar_update",
+      "changes_json": "{\"avatar_type\":\"preset\",\"avatar_id\":\"samurai_dark\",\"profile_image\":null}",
+      "created_at": "2026-08-14T20:21:13.471Z"
+    },
+    {
+      "id": "log-1786772534912-995",
+      "user_id": "user-vip",
+      "change_type": "avatar_update",
+      "changes_json": "{\"avatar_type\":\"preset\",\"avatar_id\":\"samurai_dark\",\"profile_image\":null}",
+      "created_at": "2026-08-15T05:42:14.914Z"
+    },
+    {
+      "id": "log-1786785196789-340",
+      "user_id": "user-vip",
+      "change_type": "profile_update",
+      "changes_json": "{\"username\":\"VIP Guest San\",\"phone\":\"+1 (555) 987-6543\",\"date_of_birth\":\"1995-08-15\",\"gender\":\"Male\",\"address\":\"Ginza Tower Suite 402, Tokyo, Japan\"}",
+      "created_at": "2026-08-15T09:13:16.791Z"
+    },
+    {
+      "id": "log-1786785295025-822",
+      "user_id": "user-vip",
+      "change_type": "profile_update",
+      "changes_json": "{\"username\":\"Balaji\",\"phone\":\"+ 91 631132889\",\"date_of_birth\":\"2004-04-02\",\"gender\":\"Male\",\"address\":\"Ozili\"}",
+      "created_at": "2026-08-15T09:14:55.025Z"
+    },
+    {
+      "id": "log-1786785296447-875",
+      "user_id": "user-vip",
+      "change_type": "profile_update",
+      "changes_json": "{\"username\":\"Balaji\",\"phone\":\"+ 91 631132889\",\"date_of_birth\":\"2004-04-02\",\"gender\":\"Male\",\"address\":\"Ozili\"}",
+      "created_at": "2026-08-15T09:14:56.447Z"
+    },
+    {
+      "id": "log-1786789584865-75",
+      "user_id": "user-vip",
+      "change_type": "profile_update",
+      "changes_json": "{\"username\":\"VIP Guest San\",\"phone\":\"+1 (555) 987-6543\",\"date_of_birth\":\"1995-08-15\",\"gender\":\"Male\",\"address\":\"Ginza Tower Suite 402, Tokyo, Japan\"}",
+      "created_at": "2026-08-15T10:26:24.866Z"
+    },
+    {
+      "id": "log-1786789584912-779",
+      "user_id": "user-vip",
+      "change_type": "avatar_update",
+      "changes_json": "{\"avatar_type\":\"preset\",\"avatar_id\":\"samurai_dark\",\"profile_image\":null}",
+      "created_at": "2026-08-15T10:26:24.912Z"
+    }
+  ]
+}
